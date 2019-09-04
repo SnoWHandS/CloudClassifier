@@ -1,10 +1,9 @@
-package cloudscapes;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Vector;
 
 public class CloudData {
 
@@ -12,6 +11,12 @@ public class CloudData {
 	float [][][] convection; // vertical air movement strength, that evolves over time
 	int [][][] classification; // cloud type per grid point, evolving over time
 	int dimx, dimy, dimt; // data dimensions
+	Vector total = new Vector(); //stores average X and Y wind values for entire grid
+
+	public CloudData(String inputDataPath){
+		//Constructor
+		readData(inputDataPath);
+	}
 
 	// overall number of elements in the timeline grids
 	int dim(){
@@ -43,8 +48,8 @@ public class CloudData {
 				for(int x = 0; x < dimx; x++)
 					for(int y = 0; y < dimy; y++){
 						advection[t][x][y] = new Vector();
-						advection[t][x][y].x = sc.nextFloat();
-						advection[t][x][y].y = sc.nextFloat();
+						advection[t][x][y].add(sc.nextFloat());
+						advection[t][x][y].add(sc.nextFloat());
 						convection[t][x][y] = sc.nextFloat();
 					}
 			
@@ -60,14 +65,76 @@ public class CloudData {
 			e.printStackTrace();
 		}
 	}
+
+	public void setCloudDataClassification(){
+		//Iterate over all the data and set magnitude for classification
+		for (int t = 0; t < dimt; t++){
+			for (int x = 0; x < dimx; x++){
+				for (int y = 0; y < dimy; y++){                       
+					double windMagnitude = getMagnitude(t,x,y);
+					if (Math.abs(convection[t][x][y]) > windMagnitude){
+						classification[t][x][y] = 0;
+					}
+					else if (windMagnitude > 0.2){
+						classification[t][x][y] = 1;
+					}
+					else{
+						classification[t][x][y] = 2;
+					}
+				}
+			}
+		}
+    }
+        
+	public double getMagnitude(int t, int x, int y){
+		//Get the vectors magnitude
+		float X = 0;
+		float Y = 0;
+		for (int i = x-1; i <= x+1; i++) {
+			if (i >= 0 && i < dimx){
+				for (int j = y-1; j <= y+1; j++){
+					if (!(i == x && j == y) && j >= 0 && j < dimy){
+						X += ((Float)advection[t][i][j].get(0)).floatValue();
+						Y += ((Float)advection[t][i][j].get(1)).floatValue();
+					}
+				}
+			}
+		}
+		//Square both vectors and total them
+		double out =  Math.pow(Y, 2) + Math.pow(X, 2);
+		//Square root the total
+		out = Math.sqrt(out);
+		return (double)((int)out*10)/10;
+	}
+        
+	public void setAdvecation(){
+		float X = 0;
+		float Y = 0;
+		for (int t = 0; t < dimt; t++){
+			for (int x = 0; x < dimx; x++){
+				for (int y = 0; y < dimy; y++){
+					X += ((Float)advection[t][x][y].get(0)).floatValue();
+					Y += ((Float)advection[t][x][y].get(1)).floatValue();
+				}
+			}
+		}
+		double outX = (double)((int)(X/dim()*1000))/1000;
+		double outY = (double)((int)(Y/dim()*1000))/1000;
+		total.add(outX);
+		total.add(outY);
+	}
+	
+	public void printAverage(){
+		System.out.println("Average is [" +total.get(0) +";" +total.get(1) +"]");
+	}
 	
 	// write classification output to file
 	void writeData(String fileName, Vector wind){
-		 try{ 
+		 try{
 			 FileWriter fileWriter = new FileWriter(fileName);
 			 PrintWriter printWriter = new PrintWriter(fileWriter);
 			 printWriter.printf("%d %d %d\n", dimt, dimx, dimy);
-			 printWriter.printf("%f %f\n", wind.x, wind.y);
+			 printWriter.printf("%f %f\n", wind.get(0), wind.get(1));
 			 
 			 for(int t = 0; t < dimt; t++){
 				 for(int x = 0; x < dimx; x++){
