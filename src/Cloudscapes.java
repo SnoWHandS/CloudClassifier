@@ -6,5 +6,6 @@ public class Cloudscapes{
         cloudData.setAdvecation();
         cloudData.printAverage();
         cloudData.setCloudDataClassification();
+        cloudData.printClassification();
     }
 }

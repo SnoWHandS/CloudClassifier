@@ -55,7 +55,7 @@ public class CloudData {
 			
 			classification = new int[dimt][dimx][dimy];
 			sc.close(); 
-		} 
+		}
 		catch (IOException e){ 
 			System.out.println("Unable to open input file "+fileName);
 			e.printStackTrace();
@@ -125,7 +125,18 @@ public class CloudData {
 	}
 	
 	public void printAverage(){
-		System.out.println("Average is [" +total.get(0) +";" +total.get(1) +"]");
+		System.out.println(total.get(0) +" "+total.get(1));
+	}
+
+	public void printClassification(){
+		for (int t = 0; t < dimt; t++){
+			for (int x = 0; x < dimx; x++){
+				for (int y = 0; y < dimy; y++){
+						System.out.print(String.valueOf(classification[t][x][y])+" ");
+				}
+			}
+			System.out.print("\n");
+		}
 	}
 	
 	// write classification output to file
@@ -135,7 +146,6 @@ public class CloudData {
 			 PrintWriter printWriter = new PrintWriter(fileWriter);
 			 printWriter.printf("%d %d %d\n", dimt, dimx, dimy);
 			 printWriter.printf("%f %f\n", wind.get(0), wind.get(1));
-			 
 			 for(int t = 0; t < dimt; t++){
 				 for(int x = 0; x < dimx; x++){
 					for(int y = 0; y < dimy; y++){
@@ -143,8 +153,7 @@ public class CloudData {
 					}
 				 }
 				 printWriter.printf("\n");
-		     }
-				 
+		     }	 
 			 printWriter.close();
 		 }
 		 catch (IOException e){
