@@ -28,10 +28,7 @@ javadoc:
 	$(JAVADOC) -d ./Docs -sourcepath $(SRCDIR) $(JAVAS)
 
 run:
-	java -cp bin Cloudscapes "simplesample_input.txt"
+	java -cp bin Cloudscapes "simplesample_input.txt" "Mysimplesample_output.txt"
 	
 largeRun:
-	java -cp bin Cloudscapes "largesample_input.txt"
-		
-customRun:
-	java -cp bin Cloudscapes "custom.txt"
+	java -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt"

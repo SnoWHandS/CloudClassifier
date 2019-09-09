@@ -109,7 +109,8 @@ public class CloudData {
 		//Square both vectors, total them and squareroot
 		double out =  Math.sqrt(Math.pow(Y, 2) + Math.pow(X, 2));
 		//return (float)((int)out*10)/10;
-		return (double)((int)out*10)/10;
+		//(double)((int)out*10)/10
+		return out;
 	}
         
 	public void setAdvecation(){
@@ -123,10 +124,10 @@ public class CloudData {
 				}
 			}
 		}
-		double outX = (double)((int)(X/dim()*1000))/1000;
-		double outY = (double)((int)(Y/dim()*1000))/1000;
-		total.add(outX);
-		total.add(outY);
+		double avX = (double)((int)(X/dim()*1000))/1000;
+		double avY = (double)((int)(Y/dim()*1000))/1000;
+		total.add(avX);
+		total.add(avY);
 	}
 	
 	public void printAverage(){
@@ -145,12 +146,12 @@ public class CloudData {
 	}
 	
 	// write classification output to file
-	void writeData(String fileName, Vector wind){
+	void writeData(String fileName){
 		 try{
 			 FileWriter fileWriter = new FileWriter(fileName);
 			 PrintWriter printWriter = new PrintWriter(fileWriter);
 			 printWriter.printf("%d %d %d\n", dimt, dimx, dimy);
-			 printWriter.printf("%f %f\n", wind.get(0), wind.get(1));
+			 printWriter.printf("%f %f\n", total.get(0), total.get(1));
 			 for(int t = 0; t < dimt; t++){
 				 for(int x = 0; x < dimx; x++){
 					for(int y = 0; y < dimy; y++){
