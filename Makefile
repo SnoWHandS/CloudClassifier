@@ -32,3 +32,6 @@ run:
 	
 largeRun:
 	java -cp bin Cloudscapes "largesample_input.txt"
+		
+customRun:
+	java -cp bin Cloudscapes "custom.txt"

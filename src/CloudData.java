@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Vector;
+import java.util.Locale;
 
 public class CloudData {
 
@@ -34,7 +35,7 @@ public class CloudData {
 	// read cloud simulation data from file
 	void readData(String fileName){ 
 		try{ 
-			Scanner sc = new Scanner(new File(fileName), "UTF-8");
+			Scanner sc = new Scanner(new File(fileName), "UTF-8").useLocale(Locale.US);
 			
 			// input grid dimensions and simulation duration in timesteps
 			dimt = sc.nextInt();
@@ -90,20 +91,24 @@ public class CloudData {
 		//Get the vectors magnitude
 		float X = 0;
 		float Y = 0;
+		//|-1|0|1| average in x direction
 		for (int i = x-1; i <= x+1; i++) {
 			if (i >= 0 && i < dimx){
+				//|-1|
+				//|0 |
+				//|1 | average in y direction
 				for (int j = y-1; j <= y+1; j++){
 					if (!(i == x && j == y) && j >= 0 && j < dimy){
+						//If at boundary case, ignore those values
 						X += ((Float)advection[t][i][j].get(0)).floatValue();
 						Y += ((Float)advection[t][i][j].get(1)).floatValue();
 					}
 				}
 			}
 		}
-		//Square both vectors and total them
-		double out =  Math.pow(Y, 2) + Math.pow(X, 2);
-		//Square root the total
-		out = Math.sqrt(out);
+		//Square both vectors, total them and squareroot
+		double out =  Math.sqrt(Math.pow(Y, 2) + Math.pow(X, 2));
+		//return (float)((int)out*10)/10;
 		return (double)((int)out*10)/10;
 	}
         
