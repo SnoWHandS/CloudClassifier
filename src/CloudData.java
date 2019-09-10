@@ -129,10 +129,6 @@ public class CloudData {
 		total.add(avX);
 		total.add(avY);
 	}
-	
-	public void printAverage(){
-		System.out.println(total.get(0) +" "+total.get(1));
-	}
 
 	public void printClassification(){
 		for (int t = 0; t < dimt; t++){
