@@ -1,4 +1,5 @@
 import java.util.concurrent.TimeUnit;
+import java.io.PrintStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -17,6 +18,31 @@ public class Cloudscapes{
             System.out.println("Loading data...");
             CloudData cloudData = new CloudData("./inputs/"+inputFile);
             ParallelCloudData pCloudData = new ParallelCloudData("./inputs/"+inputFile);
+
+            if(args[2].equals("bestSplit")){
+                PrintStream csvOut = new PrintStream(new File("bestSplit.csv"));
+                System.out.println("Finding best split...")
+                for (int i = 100; i <= 10000; i+=100){
+                    lParaTotalTime = 0;
+                    pCloudData.setSplit(i);
+                    for(int j = 0; j<5; j++){
+                        //start timer
+                        lStartTime = System.nanoTime();
+                        //compute
+                        pCloudData.start();
+                        //end timer
+                        lEndTime = System.nanoTime();
+                        //time elapsed
+                        float output = (lEndTime - lStartTime)/1000000.0f;
+                        lParaTotalTime += output;
+                    }
+                    System.out.println("split: "+i+" millis: "+(lParaTotalTime/5));
+                    csvOut.println(i +"," +(lParaTotalTime/5));
+                }
+                csvOut.close();
+            }
+
+            //set Split to somewhere in the middle
             pCloudData.setSplit(6300);
             //Run garbage collector to prevent it interfereing with run
             System.gc();

@@ -95,7 +95,8 @@ public class ParallelThread extends RecursiveTask<Vector>{
             outVect.add(sumX);
             outVect.add(sumY);
             return outVect;
-        }else{//Split into left and right thread and compute
+        }else{
+            //Split into left and right thread and compute
             int middle = (max+min)/2;
             ParallelThread left = new ParallelThread(min, middle, split, advVector, classList);
             ParallelThread right = new ParallelThread(middle, max, split, advVector, classList);

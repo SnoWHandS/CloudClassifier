@@ -32,3 +32,6 @@ run:
 	
 largeRun:
 	java -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt"
+
+optimisedRun:
+	java -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt" "bestSplit"
