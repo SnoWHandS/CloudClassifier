@@ -21,8 +21,15 @@ public class Cloudscapes{
 
             if(args[2].equals("bestSplit")){
                 PrintStream csvOut = new PrintStream(new File("bestSplit.csv"));
-                System.out.println("Finding best split...")
-                for (int i = 100; i <= 10000; i+=100){
+                System.out.println("Finding best split...");
+                //Run garbage collector to prevent it interfereing with run
+                System.gc();
+                //Warm the cache
+                for (int j = 0; j<5; j++){
+                    System.out.println("Warming up cache: "+j+"/5");
+                    pCloudData.start();
+                }
+                for (int i = 10; i <= 10000; i+=10){
                     lParaTotalTime = 0;
                     pCloudData.setSplit(i);
                     for(int j = 0; j<5; j++){
@@ -41,6 +48,9 @@ public class Cloudscapes{
                 }
                 csvOut.close();
             }
+
+            //Reset the variable
+            lParaTotalTime = 0;
 
             //set Split to somewhere in the middle
             pCloudData.setSplit(6300);

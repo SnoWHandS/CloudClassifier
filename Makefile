@@ -2,7 +2,13 @@
 # Dillon Heald
 # 4 September 2019
 
+#For use on cluster
+#JAVAC=/home/dheald/apps/java/jdk-11.0.4/bin/javac
+#JAVA=/home/dheald/apps/java/jdk-11.0.4/bin/java
+
+#For use on laptop
 JAVAC=/usr/bin/javac
+JAVA=/usr/bin/java
 JAVADOC=/usr/bin/javadoc
 .SUFFIXES: .java .class
 
@@ -28,10 +34,10 @@ javadoc:
 	$(JAVADOC) -d ./Docs -sourcepath $(SRCDIR) $(JAVAS)
 
 run:
-	java -cp bin Cloudscapes "simplesample_input.txt" "Mysimplesample_output.txt"
+	$(JAVA)java -cp bin Cloudscapes "simplesample_input.txt" "Mysimplesample_output.txt"
 	
 largeRun:
-	java -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt"
+	$(JAVA) -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt"
 
 optimisedRun:
-	java -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt" "bestSplit"
+	$(JAVA) -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt" "bestSplit"
