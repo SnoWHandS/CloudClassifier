@@ -19,11 +19,12 @@ public class Cloudscapes{
             CloudData cloudData = new CloudData("./inputs/"+inputFile);
             ParallelCloudData pCloudData = new ParallelCloudData("./inputs/"+inputFile);
 
-            if(args[2].equals("bestSplit")){
+            if(args[1].equals("bestSplit")){
                 PrintStream csvOut = new PrintStream(new File("bestSplit.csv"));
                 System.out.println("Finding best split...");
                 //Run garbage collector to prevent it interfereing with run
                 System.gc();
+                pCloudData.setSplit(6300);
                 //Warm the cache
                 for (int j = 0; j<5; j++){
                     System.out.println("Warming up cache: "+j+"/5");

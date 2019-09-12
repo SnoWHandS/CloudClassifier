@@ -1,3 +1,0 @@
-java -cp bin Cloudscapes "simplesample_input.txt"
-running Cloudscapes
-Makefile:31: recipe for target 'run' failed

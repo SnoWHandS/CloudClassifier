@@ -14,6 +14,7 @@ public class ParallelCloudData {
 	int [][][] classification; // cloud type per grid point, evolving over time
 	static int dimx, dimy, dimt; // data dimensions
 	Vector total = new Vector(); //stores average X and Y wind values for entire grid
+	//Adjust the constructor to change the level of parallelism (threads)
 	static final ForkJoinPool threadPool = new ForkJoinPool();
 	int threadSplit;
 
@@ -58,9 +59,9 @@ public class ParallelCloudData {
 				for(int x = 0; x < dimx; x++)
 					for(int y = 0; y < dimy; y++){
 						advection[t][x][y] = new Vector();
+						advection[t][x][y].add(sc.nextFloat());
+						advection[t][x][y].add(sc.nextFloat());
 						convection[t][x][y] = sc.nextFloat();
-						advection[t][x][y].add(sc.nextFloat());
-						advection[t][x][y].add(sc.nextFloat());
 					}
 			
 			classification = new int[dimt][dimx][dimy];
@@ -78,7 +79,8 @@ public class ParallelCloudData {
 
 	public void start(){
 			//Spawn a thread with relevant data and the split
-            Vector averageWinds = threadPool.invoke(new ParallelThread(0, dim(), threadSplit, advection, classification));
+			//System.out.println("Max dimension/threads: "+dim());
+			Vector averageWinds = threadPool.invoke(new ParallelThread(0, dim(), threadSplit, advection, classification));
 			//Assign average wind x and y components
 			float windX = (Float)averageWinds.get(0);
             float windY = (Float)averageWinds.get(1);

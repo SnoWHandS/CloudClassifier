@@ -14,7 +14,7 @@ JAVADOC=/usr/bin/javadoc
 
 SRCDIR=src
 BINDIR=bin
-
+DOC=doc
 $(BINDIR)/%.class:$(SRCDIR)/%.java
 	$(JAVAC) -sourcepath $(SRCDIR) -d $(BINDIR)/ -cp $(BINDIR) $<
 
@@ -31,13 +31,20 @@ clean:
 	
 javadoc:
 	#No idea why this wont work. running it manually in ./src does work. - I accept defeat.
-	$(JAVADOC) -d ./Docs -sourcepath $(SRCDIR) $(JAVAS)
+	#$(JAVADOC) -d ./Docs -sourcepath $(SRCDIR) $(JAVAS)
+	$(JAVADOC) -d $(DOC) $(SRCDIR)/*.java
 
 run:
-	$(JAVA)java -cp bin Cloudscapes "simplesample_input.txt" "Mysimplesample_output.txt"
-	
+	$(JAVA) -cp bin Cloudscapes "simplesample_input.txt" "Mysimplesample_output.txt"
+difSizerun:
+	$(JAVA) -cp bin Cloudscapes "1-2xsimplesample_input.txt" "1-2xsimplesample_output.txt"
+	$(JAVA) -cp bin Cloudscapes "1-4xsimplesample_input.txt" "1-4xsimplesample_output.txt"
+	$(JAVA) -cp bin Cloudscapes "1-8xsimplesample_input.txt" "1-8xsimplesample_output.txt"
+	$(JAVA) -cp bin Cloudscapes "1-16xsimplesample_input.txt" "1-16xsimplesample_output.txt"
+	$(JAVA) -cp bin Cloudscapes "1-32xsimplesample_input.txt" "1-32xsimplesample_output.txt"
+
 largeRun:
 	$(JAVA) -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt"
 
 optimisedRun:
-	$(JAVA) -cp bin Cloudscapes "largesample_input.txt" "Mylargesample_output.txt" "bestSplit"
+	$(JAVA) -cp bin Cloudscapes "bestSplit" "Mylargesample_output.txt"
